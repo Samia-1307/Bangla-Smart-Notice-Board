@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Bangla Notice Board</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fdfdfd;
+      color: #222;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .button-group {
+      margin-top: 25px;
+    }
+
+    .button-group input[type="button"] {
+      margin: 5px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #e8e8e8;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .button-group input[type="button"]:hover {
+      background-color: #dcdcdc;
+    }
+
+    #selected-msg {
+      margin-top: 30px;
+      padding: 12px 20px;
+      font-size: 20px;
+      color: #0047ab;
+      font-weight: bold;
+      background-color: #eef4ff;
+      border: 1px solid #b3d1ff;
+      display: inline-block;
+      border-radius: 6px;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    #project-info {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+
+    #login-box {
+      margin-top: 100px;
+    }
+
+    #password {
+      padding: 8px;
+      font-size: 16px;
+      width: 200px;
+    }
+
+    #login-button {
+      padding: 8px 16px;
+      font-size: 16px;
+      margin-left: 10px;
+    }
+  </style>
+
+  <script>
+    const password = "micro416";
+
+    function login() {
+      const input = document.getElementById("password").value;
+      if (input === password) {
+        document.getElementById("login-box").style.display = "none";
+        document.getElementById("main-content").style.display = "block";
+      } else {
+        alert("Wrong password!");
+      }
+    }
+
+    function sendIndex(index, label) {
+      const espIP = "http://172.20.10.11"; // Replace with your ESP's IP
+      fetch(`${espIP}/index?value=${index}`)
+        .then(response => response.text())
+        .then(data => {
+          console.log("ESP Response:", data);
+        })
+        .catch(error => console.error("Error:", error));
+
+      // Show selected label
+      document.getElementById("selected-msg").innerText = "Selected: " + label;
+    }
+  </script>
+</head>
+
+<body>
+
+  <!-- Password Login -->
+  <div id="login-box">
+    <h2>Enter Password</h2>
+    <input type="password" id="password" placeholder="Enter password">
+    <button id="login-button" onclick="login()">Login</button>
+  </div>
+
+  <!-- Main Content -->
+  <div id="main-content" style="display:none;">
+    <h1>Bangla Smart Notice Board</h1>
+
+    <div id="project-info">
+      <input type="text" value="Project 416 by Group2, C1" readonly>
+    </div>
+
+    <div class="button-group">
+      <input type="button" value="লাইন মেনে চলুন" onclick="sendIndex(136, 'লাইন মেনে চলুন')">
+      <input type="button" value="আগে নামতে দিন" onclick="sendIndex(137, 'আগে নামতে দিন')">
+      <input type="button" value="যাত্রা শুভ হোক" onclick="sendIndex(138, 'যাত্রা শুভ হোক')">
+      <input type="button" value="নিরাপদ দুরত্ত বজায় রাখুন" onclick="sendIndex(139, 'নিরাপদ দুরত্ত বজায় রাখুন')">
+      <input type="button" value="গাড়ি থামবে" onclick="sendIndex(140, 'গাড়ি থামবে')">
+      <input type="button" value="Clear" onclick="sendIndex(135, 'Clear Notice')">
+    </div>
+
+    <div id="selected-msg">Selected: None</div>
+  </div>
+
+</body>
+</html>
+
